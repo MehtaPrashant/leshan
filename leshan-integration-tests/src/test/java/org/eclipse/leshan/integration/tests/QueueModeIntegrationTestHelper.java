@@ -55,6 +55,7 @@ import org.eclipse.leshan.server.queue.impl.InMemoryMessageStore;
 import org.eclipse.leshan.server.queue.impl.QueuedRequestSender;
 import org.eclipse.leshan.server.registration.RegistrationHandler;
 import org.eclipse.leshan.server.request.LwM2mRequestSender;
+import org.eclipse.leshan.server.security.BasicAuthorizer;
 import org.eclipse.leshan.server.security.EditableSecurityStore;
 
 /**
@@ -108,7 +109,8 @@ public class QueueModeIntegrationTestHelper extends IntegrationTestHelper {
         coapServer.addEndpoint(noSecureEndpoint);
         coapServer.addEndpoint(secureEndpoint);
 
-        RegisterResource rdResource = new RegisterResource(new RegistrationHandler(registrationService, securityStore));
+        RegisterResource rdResource = new RegisterResource(
+                new RegistrationHandler(registrationService, securityStore, new BasicAuthorizer()));
         coapServer.add(rdResource);
 
         InMemoryMessageStore inMemoryMessageStore = new InMemoryMessageStore();
